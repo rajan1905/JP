@@ -4,16 +4,18 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
+import com.trade.comparators.ValueComparator;
 import com.trade.ticker.Ticker;
 
 public class Statistics 
 {
 	public static Map<Calendar,Float> incomingAmountSettledPerDay;
 	public static Map<Calendar,Float> outgoingAmountSettledPerDay;
-	private static long timeStamp=0;
 	public static Map<String,Float> entityIncomingRank;
 	public static Map<String,Float> entityOutgoingRank;
+	private static final char SELL='S';
 	
 	static
 	{
@@ -25,63 +27,86 @@ public class Statistics
 	
 	private Statistics() {}
 	
-	public static void addToAmountSettledPerDay(Ticker ticker)
+	public static void calculateAmountSettledPerDay(Ticker ticker, float amount)
 	{
 		Map<Calendar,Float> map=null;
 		Calendar settlementDate=ticker.getSettlementDate();
-		float amount= ticker.getUnits() * ticker.getPricePerUnit() * ticker.getAgreedFx();
 		
-		if(ticker.getAction()=='S')
-			map=incomingAmountSettledPerDay;
-		else
-			map=outgoingAmountSettledPerDay;
+		map = ticker.getAction()==SELL ? incomingAmountSettledPerDay : outgoingAmountSettledPerDay;
 		
-		if(map.containsKey(settlementDate))
-		{
-			float value=map.get(settlementDate);
-			value += amount;
-			map.remove(settlementDate);
-			map.put(settlementDate, value);
-		}
-		else
-		{
-			map.put(settlementDate, amount);
-		}
+		float currentValue = map.get(settlementDate) == null ? 0 : map.get(settlementDate);
+		currentValue += amount;
+		
+		map.put(settlementDate, currentValue);
+		
+		computeRanking(ticker , currentValue);
 	}
 	
-	public static void computeRanking(Ticker ticker)
+	public static void computeRanking(Ticker ticker, float amount)
 	{
 		Map<String,Float> map=null;
 		String entity=ticker.getEntity();
-		float amount= ticker.getUnits() * ticker.getPricePerUnit() * ticker.getAgreedFx();
 		
-		if(ticker.getAction()=='S')
-			map=entityIncomingRank;
-		else
-			map=entityOutgoingRank;
+		map = ticker.getAction() == SELL ? entityIncomingRank : entityOutgoingRank;
 		
-		if(map.containsKey(entity))
-		{
-			float value=map.get(entity);
-			value += amount;
-			map.remove(entity);
-			map.put(entity, value);
-		}
-		else
-		{
-			map.put(entity, amount);
-		}
+		float currentValue = map.get(entity) == null ? 0 : map.get(entity);
+		currentValue += amount;
+		
+		map.put(entity, currentValue);
+		
 	}
 	
 	public synchronized static void computeStatistics(Ticker ticker)
 	{
-		addToAmountSettledPerDay(ticker);
-		computeRanking(ticker);
-		timeStamp=System.nanoTime();
+		float amount= ticker.getUnits() * ticker.getPricePerUnit() * ticker.getAgreedFx();
+		
+		calculateAmountSettledPerDay(ticker , amount);
+
 	}
 	
-	public static long getTimeStamp()
+	@SuppressWarnings("rawtypes")
+	public static void printStatistics()
 	{
-		return timeStamp;
+		StringBuilder sb=new StringBuilder();
+		sb.append("\tShowing amount settled incoming per day\n");
+		sb.append("\t---------------------------------------\n\n");
+		
+		Iterator<?> iterator=incomingAmountSettledPerDay.entrySet().iterator();
+		
+		while(iterator.hasNext())
+		{
+			Map.Entry pair=(Map.Entry) iterator.next();
+			Calendar calendar=(Calendar) pair.getKey();
+			sb.append("Date : "+calendar.getTime()+" Amount : "+pair.getValue()+"\n\n");
+			
+		}
+		
+		iterator=outgoingAmountSettledPerDay.entrySet().iterator();
+		
+		sb.append("\tShowing amount settled outging per day\n");
+		sb.append("\t---------------------------------------\n\n");
+		
+		while(iterator.hasNext())
+		{
+			Map.Entry pair=(Map.Entry) iterator.next();
+			Calendar calendar=(Calendar) pair.getKey();
+			sb.append("Date : "+calendar.getTime()+" Amount : "+pair.getValue()+"\n\n");
+		}
+		
+		ValueComparator valueComparator=new ValueComparator(entityIncomingRank);
+		TreeMap<String,Float> sortedMap=new TreeMap<String, Float>(valueComparator);
+		
+		sortedMap.putAll(entityIncomingRank);
+		
+		sb.append(sortedMap);
+		
+		valueComparator=new ValueComparator(entityOutgoingRank);
+		sortedMap=new TreeMap<String, Float>(valueComparator);
+		
+		sortedMap.putAll(entityOutgoingRank);
+		sb.append("\n\n");
+		sb.append(sortedMap);
+		
+		System.out.println(sb.toString());
 	}
 }

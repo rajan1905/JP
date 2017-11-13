@@ -1,6 +1,7 @@
 package com.trade.main;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.trade.inputsource.Source;
 import com.trade.statistics.Statistics;
@@ -9,7 +10,7 @@ import com.trade.ticker.TickerUtility;
 public class EntryPoint 
 {
 
-	public static void main(String[] args) 
+	public static void main(String[] args) throws InterruptedException, IOException 
 	{
 		String fileLocation="com/trade/resources/entity.csv";
 		ClassLoader classLoader=EntryPoint.class.getClassLoader();
