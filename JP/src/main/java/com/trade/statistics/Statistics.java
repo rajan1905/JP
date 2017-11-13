@@ -1,9 +1,11 @@
-package com.trade.ticker;
+package com.trade.statistics;
 
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import com.trade.ticker.Ticker;
 
 public class Statistics 
 {

@@ -2,6 +2,8 @@ package com.trade.ticker;
 
 import java.util.concurrent.BlockingQueue;
 
+import com.trade.statistics.Statistics;
+
 public class ProcessTicker implements Runnable
 {
 	BlockingQueue<Ticker> queue;
