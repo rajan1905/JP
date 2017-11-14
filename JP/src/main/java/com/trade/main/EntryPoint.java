@@ -12,7 +12,7 @@ public class EntryPoint
 
 	public static void main(String[] args) throws InterruptedException, IOException 
 	{
-		String fileLocation="com/trade/resources/entity.csv";
+		String fileLocation="com/trade/resources/input.txt";
 		ClassLoader classLoader=EntryPoint.class.getClassLoader();
 		File file=new File(classLoader.getResource(fileLocation).getFile());
 		
