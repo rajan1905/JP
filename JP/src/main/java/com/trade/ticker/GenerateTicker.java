@@ -2,6 +2,16 @@ package com.trade.ticker;
 
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * The GenerateTicker class is used to generate {@link Ticker}
+ * by reading from an input queue(containing ticker entries).
+ * 
+ * The ticker is then added to {@link ProcessTicker} queue
+ * for further processing.
+ * 
+ * @author rajan.singh
+ *
+ */
 public class GenerateTicker implements Runnable
 {
 	private BlockingQueue<String> input;
