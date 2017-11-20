@@ -2,6 +2,12 @@ package com.trade.ticker;
 
 import java.util.Calendar;;
 
+/**
+ * The Ticker class is used to represent a single trade record.
+ * 
+ * @author rajan.singh
+ *
+ */
 public class Ticker 
 {
 	private String entity;

@@ -10,12 +10,27 @@ import java.util.concurrent.BlockingQueue;
 
 import com.trade.enums.WorkWeek;
 
+/**
+ * The TickerUtility acts as a starting module for {@link Ticker} generation
+ * and processing. This class uses a queue for getting input from the Source
+ * module and after processing, passes the Ticker to {@link Statistics} module
+ * for generating statistics.
+ * 
+ * @author rajan.singh
+ *
+ */
 public class TickerUtility 
 {
 	private static final int PROCESSORS=1;
 	private static BlockingQueue<Ticker> queue=new ArrayBlockingQueue<Ticker>(128,true);
 	public static BlockingQueue<String> input=new ArrayBlockingQueue<String>(1024,true);
 	
+	/**
+	 * This method is used to start the Ticker creation & processing module.
+	 *  
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	public static void init() throws IOException,InterruptedException
 	{
 		Runnable runnable;
@@ -35,6 +50,13 @@ public class TickerUtility
 		}
 	}
 	
+	/**
+	 * The method checks whether the settlementDate of {@link Ticker}
+	 * is falling in working week as prescribed by ticker's market.
+	 * 
+	 * @param ticker
+	 * @return boolean
+	 */
 	@SuppressWarnings("deprecation")
 	public static boolean checkForWorkingWeek(Ticker ticker)
 	{
@@ -53,6 +75,12 @@ public class TickerUtility
 		return result;
 	}
 	
+	/**
+	 * This method finds the next working day for a {@link Ticker}
+	 * and sets the settlementDate of the Ticker to that day.
+	 * 
+	 * @param ticker
+	 */
 	public static void findNextWorkingDayForSettlement(Ticker ticker)
 	{
 		Calendar newSettlementDate=ticker.getSettlementDate();
@@ -65,6 +93,14 @@ public class TickerUtility
 		
 	}
 	
+	/**
+	 * Convert string representation 'dd MMM yyyy' to corresponding {@link Calendar}
+	 * object. If the input representation is of different format, an exception 
+	 * of type {@link ParseException} would be thrown.
+	 * 
+	 * @param input
+	 * @return {@link Calendar}
+	 */
 	public static Calendar convertStringToCalendar(String input)
 	{
 		Calendar calendar=Calendar.getInstance();

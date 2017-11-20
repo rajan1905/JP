@@ -11,6 +11,13 @@ import java.util.concurrent.BlockingQueue;
 import com.trade.comparators.ValueComparator;
 import com.trade.ticker.Ticker;
 
+/**
+ * The Statistics class is used to perform all statistic-computation
+ * related tasks. 
+ * 
+ * @author rajan.singh
+ *
+ */
 public class Statistics 
 {
 	public static BlockingQueue<Ticker> statisticQueue;
@@ -31,6 +38,9 @@ public class Statistics
 	
 	private Statistics() {}
 	
+	/**
+	 * This method is used to initialize the Statistics module.
+	 */
 	public static void init()
 	{
 		Runnable runnable=new Runnable()
@@ -58,6 +68,13 @@ public class Statistics
 		Thread generateStatistics=new Thread(runnable , "StatisticThread");
 		generateStatistics.start();
 	}
+	
+	/**
+	 * This method is used to calculate the amount settled per Calendar day.
+	 * 
+	 * @param ticker
+	 * @param amount
+	 */
 	public static void calculateAmountSettledPerDay(Ticker ticker, float amount)
 	{
 		Map<Calendar,Float> map=null;
@@ -73,6 +90,13 @@ public class Statistics
 		computeRanking(ticker , currentValue);
 	}
 	
+	/**
+	 * This method is used to compute the ranking by incoming/outgoing amount 
+	 * for each trade entity.
+	 * 
+	 * @param ticker
+	 * @param amount
+	 */
 	public static void computeRanking(Ticker ticker, float amount)
 	{
 		Map<String,Float> map=null;
