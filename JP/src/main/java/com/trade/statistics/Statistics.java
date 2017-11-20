@@ -5,12 +5,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import com.trade.comparators.ValueComparator;
 import com.trade.ticker.Ticker;
 
 public class Statistics 
 {
+	public static BlockingQueue<Ticker> statisticQueue;
 	public static Map<Calendar,Float> incomingAmountSettledPerDay;
 	public static Map<Calendar,Float> outgoingAmountSettledPerDay;
 	public static Map<String,Float> entityIncomingRank;
@@ -19,6 +22,7 @@ public class Statistics
 	
 	static
 	{
+		statisticQueue=new ArrayBlockingQueue<Ticker>(1024,true);
 		incomingAmountSettledPerDay=new HashMap<Calendar, Float>();
 		outgoingAmountSettledPerDay=new HashMap<Calendar, Float>();
 		entityIncomingRank=new HashMap<String, Float>();
@@ -27,6 +31,33 @@ public class Statistics
 	
 	private Statistics() {}
 	
+	public static void init()
+	{
+		Runnable runnable=new Runnable()
+		{
+			public void run() 
+			{
+				while(true)
+				{
+					try
+					{
+						Ticker ticker=statisticQueue.take();
+						float amount= ticker.getUnits() * ticker.getPricePerUnit() * ticker.getAgreedFx();
+						
+						calculateAmountSettledPerDay(ticker , amount);
+					}
+					catch(InterruptedException ie)
+					{
+						ie.printStackTrace();
+					}
+				}
+				
+			}
+		};
+		
+		Thread generateStatistics=new Thread(runnable , "StatisticThread");
+		generateStatistics.start();
+	}
 	public static void calculateAmountSettledPerDay(Ticker ticker, float amount)
 	{
 		Map<Calendar,Float> map=null;
@@ -54,14 +85,6 @@ public class Statistics
 		
 		map.put(entity, currentValue);
 		
-	}
-	
-	public synchronized static void computeStatistics(Ticker ticker)
-	{
-		float amount= ticker.getUnits() * ticker.getPricePerUnit() * ticker.getAgreedFx();
-		
-		calculateAmountSettledPerDay(ticker , amount);
-
 	}
 	
 	@SuppressWarnings("rawtypes")

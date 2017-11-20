@@ -24,7 +24,7 @@ public class ProcessTicker implements Runnable
 				if(!TickerUtility.checkForWorkingWeek(ticker))
 					TickerUtility.findNextWorkingDayForSettlement(ticker);
 				
-				Statistics.computeStatistics(ticker);
+				Statistics.statisticQueue.put(ticker);
 			}
 		}
 		catch(InterruptedException e)
