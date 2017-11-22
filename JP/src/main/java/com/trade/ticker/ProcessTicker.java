@@ -2,6 +2,7 @@ package com.trade.ticker;
 
 import java.util.concurrent.BlockingQueue;
 
+import com.trade.statistics.StatisticModule;
 import com.trade.statistics.Statistics;
 
 /**
@@ -21,7 +22,7 @@ public class ProcessTicker implements Runnable
 	
 	public ProcessTicker(BlockingQueue<Ticker> queue)
 	{
-		this.queue=queue;
+		this.queue = queue;
 	}
 	
 	public void run() 
@@ -32,10 +33,12 @@ public class ProcessTicker implements Runnable
 		{
 			while((ticker=queue.take()) != null)
 			{
+				TickerUtility.performTickerValidation(ticker);
+				
 				if(!TickerUtility.checkForWorkingWeek(ticker))
 					TickerUtility.findNextWorkingDayForSettlement(ticker);
 				
-				Statistics.statisticQueue.put(ticker);
+				StatisticModule.getStatisticQueue().put(ticker);
 			}
 		}
 		catch(InterruptedException e)

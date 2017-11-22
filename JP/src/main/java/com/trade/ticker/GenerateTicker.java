@@ -19,8 +19,8 @@ public class GenerateTicker implements Runnable
 	
 	public GenerateTicker(BlockingQueue<String> input, BlockingQueue<Ticker> queue) 
 	{
-		this.input=input;
-		this.queue=queue;
+		this.input = input;
+		this.queue = queue;
 	}
 
 	public void run() 

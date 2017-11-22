@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 import com.trade.comparators.ValueComparator;
+import com.trade.constants.Constants;
 import com.trade.ticker.Ticker;
 
 /**
@@ -20,54 +19,20 @@ import com.trade.ticker.Ticker;
  */
 public class Statistics 
 {
-	public static BlockingQueue<Ticker> statisticQueue;
 	public static Map<Calendar,Float> incomingAmountSettledPerDay;
 	public static Map<Calendar,Float> outgoingAmountSettledPerDay;
 	public static Map<String,Float> entityIncomingRank;
 	public static Map<String,Float> entityOutgoingRank;
-	private static final char SELL='S';
 	
 	static
 	{
-		statisticQueue=new ArrayBlockingQueue<Ticker>(1024,true);
-		incomingAmountSettledPerDay=new HashMap<Calendar, Float>();
-		outgoingAmountSettledPerDay=new HashMap<Calendar, Float>();
-		entityIncomingRank=new HashMap<String, Float>();
-		entityOutgoingRank=new HashMap<String, Float>();
+		incomingAmountSettledPerDay = new HashMap<Calendar, Float>();
+		outgoingAmountSettledPerDay = new HashMap<Calendar, Float>();
+		entityIncomingRank = new HashMap<String, Float>();
+		entityOutgoingRank = new HashMap<String, Float>();
 	}
 	
 	private Statistics() {}
-	
-	/**
-	 * This method is used to initialize the Statistics module.
-	 */
-	public static void init()
-	{
-		Runnable runnable=new Runnable()
-		{
-			public void run() 
-			{
-				while(true)
-				{
-					try
-					{
-						Ticker ticker=statisticQueue.take();
-						float amount= ticker.getUnits() * ticker.getPricePerUnit() * ticker.getAgreedFx();
-						
-						calculateAmountSettledPerDay(ticker , amount);
-					}
-					catch(InterruptedException ie)
-					{
-						ie.printStackTrace();
-					}
-				}
-				
-			}
-		};
-		
-		Thread generateStatistics=new Thread(runnable , "StatisticThread");
-		generateStatistics.start();
-	}
 	
 	/**
 	 * This method is used to calculate the amount settled per Calendar day.
@@ -77,10 +42,10 @@ public class Statistics
 	 */
 	public static void calculateAmountSettledPerDay(Ticker ticker, float amount)
 	{
-		Map<Calendar,Float> map=null;
-		Calendar settlementDate=ticker.getSettlementDate();
+		Map<Calendar,Float> map = null;
+		Calendar settlementDate = ticker.getSettlementDate();
 		
-		map = ticker.getAction()==SELL ? incomingAmountSettledPerDay : outgoingAmountSettledPerDay;
+		map = ticker.getAction() == Constants.SELL ? incomingAmountSettledPerDay : outgoingAmountSettledPerDay;
 		
 		float currentValue = map.get(settlementDate) == null ? 0 : map.get(settlementDate);
 		currentValue += amount;
@@ -99,10 +64,10 @@ public class Statistics
 	 */
 	public static void computeRanking(Ticker ticker, float amount)
 	{
-		Map<String,Float> map=null;
-		String entity=ticker.getEntity();
+		Map<String,Float> map = null;
+		String entity = ticker.getEntity();
 		
-		map = ticker.getAction() == SELL ? entityIncomingRank : entityOutgoingRank;
+		map = ticker.getAction() == Constants.SELL ? entityIncomingRank : entityOutgoingRank;
 		
 		float currentValue = map.get(entity) == null ? 0 : map.get(entity);
 		currentValue += amount;

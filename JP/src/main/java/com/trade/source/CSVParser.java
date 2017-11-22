@@ -1,4 +1,4 @@
-package com.trade.inputsource;
+package com.trade.source;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,7 +10,7 @@ public class CSVParser implements Parser
 
 	public void parse(File file, BlockingQueue<String> queue) throws FileNotFoundException, InterruptedException 
 	{
-		Scanner scanner=new Scanner(file);
+		Scanner scanner = new Scanner(file);
 		
 		while(scanner.hasNextLine())
 		{

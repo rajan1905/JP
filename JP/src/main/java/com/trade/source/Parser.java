@@ -1,4 +1,4 @@
-package com.trade.inputsource;
+package com.trade.source;
 
 import java.io.File;
 import java.io.FileNotFoundException;
