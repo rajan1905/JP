@@ -4,13 +4,14 @@ import java.io.File;
 import java.io.IOException;
 
 import com.trade.source.SourceModule;
+import com.trade.statistics.StatisticModule;
 import com.trade.statistics.Statistics;
 import com.trade.ticker.TickerModule;
-import com.trade.ticker.TickerUtility;
 
 public class EntryPoint 
 {
-
+	static long lastResult=0;
+	
 	public static void main(String[] args) throws InterruptedException, IOException 
 	{
 		/*
@@ -28,13 +29,12 @@ public class EntryPoint
 		 * Start the SourceModule. You can have more than one SourceModule
 		 * with different sources.
 		 */
-		SourceModule sourceModule = new SourceModule(file , null, tickerModule);
+		SourceModule sourceModule = new SourceModule(file , null, tickerModule.getInputQueue());
 		sourceModule.init();
 		
-		Statistics.init();
+		StatisticModule.init();
 		
-		Thread.sleep(2000);
-		
-		Statistics.printStatistics();
+		Thread.sleep(3000);
+		System.out.println(Statistics.printStatistics());
 	}
 }

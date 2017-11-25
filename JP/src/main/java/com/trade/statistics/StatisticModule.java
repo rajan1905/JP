@@ -25,11 +25,12 @@ public class StatisticModule
 				{
 					try
 					{
-						Ticker ticker=statisticQueue.take();
+						Ticker ticker = statisticQueue.take();
+						System.out.println("Got ticker : "+ticker);
 						float amount = ticker.getUnits() * 
 								ticker.getPricePerUnit() * 
 								ticker.getAgreedFx();
-						Statistics.calculateAmountSettledPerDay(ticker, amount);
+						Statistics.calculateAmountSettledPerDay(ticker , amount);
 					}
 					catch(InterruptedException ie)
 					{

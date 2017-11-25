@@ -25,16 +25,16 @@ public class GenerateTicker implements Runnable
 
 	public void run() 
 	{
-		Ticker ticker=null;
+		Ticker ticker = null;
 		
-		while(input.size()>0)
+		while(true)
 		{
 			try
 			{
-				String tuple=input.take();
-				String[] t=tuple.split(",");
+				String tuple = input.take();
+				String[] t = tuple.split(",");
 				
-				ticker=Ticker.builder()
+				ticker = Ticker.builder()
 						.entity(t[0])
 						.action(t[1].charAt(0))
 						.agreedFx(Float.parseFloat(t[2]))

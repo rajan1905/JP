@@ -18,8 +18,8 @@ public class TickerModule
 	
 	public TickerModule() 
 	{
-		tickerQueue = new ArrayBlockingQueue<Ticker>(Constants.DEFAULT_QUEUE_SIZE);
-		inputQueue = new ArrayBlockingQueue<String>(Constants.DEFAULT_QUEUE_SIZE);
+		tickerQueue = new ArrayBlockingQueue<Ticker>(Constants.DEFAULT_QUEUE_SIZE , true);
+		inputQueue = new ArrayBlockingQueue<String>(Constants.DEFAULT_QUEUE_SIZE , true);
 		threadPool = Executors.newCachedThreadPool();
 	}
 	

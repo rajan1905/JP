@@ -19,10 +19,10 @@ import com.trade.ticker.Ticker;
  */
 public class Statistics 
 {
-	public static Map<Calendar,Float> incomingAmountSettledPerDay;
-	public static Map<Calendar,Float> outgoingAmountSettledPerDay;
-	public static Map<String,Float> entityIncomingRank;
-	public static Map<String,Float> entityOutgoingRank;
+	private static Map<Calendar,Float> incomingAmountSettledPerDay;
+	private static Map<Calendar,Float> outgoingAmountSettledPerDay;
+	private static Map<String,Float> entityIncomingRank;
+	private static Map<String,Float> entityOutgoingRank;
 	
 	static
 	{
@@ -73,11 +73,10 @@ public class Statistics
 		currentValue += amount;
 		
 		map.put(entity, currentValue);
-		
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public static void printStatistics()
+	public static String printStatistics()
 	{
 		StringBuilder sb=new StringBuilder();
 		sb.append("\tShowing amount settled incoming per day\n");
@@ -119,6 +118,6 @@ public class Statistics
 		sb.append("\n\n");
 		sb.append(sortedMap);
 		
-		System.out.println(sb.toString());
+		return sb.toString();
 	}
 }
