@@ -2,29 +2,28 @@ package com.trade.source;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.concurrent.BlockingQueue;
 
 import com.trade.enums.SourceType;
-
+import com.trade.ticker.TickerModule;
 
 public class SourceModule 
 {
 	private File file;
 	private Parser parser;
-	BlockingQueue<String> tradeRecordQueue;
+	TickerModule tickerModule;
 	String restSource;
 	
-	public SourceModule(File file, String restSource, BlockingQueue<String> record)
+	public SourceModule(File file, String restSource, TickerModule tickerModule)
 	{
 		this.file = file;
 		this.restSource = restSource;
-		this.tradeRecordQueue = record;
+		this.tickerModule = tickerModule;
 	}
 	
 	public void init() throws FileNotFoundException,InterruptedException
 	{
 		parser = getParser(file);
-		parser.parse(file, tradeRecordQueue);
+		parser.parse(file, tickerModule);
 	}
 	
 	private SourceType getFileType(File file)
@@ -61,7 +60,7 @@ public class SourceModule
 		// Is source a REST/RSS 
 		if(file == null && restSource != null)
 		{
-			parser = new RESTClient(null , tradeRecordQueue);
+			parser = new RESTClient(null , tickerModule);
 		}
 		else
 		{

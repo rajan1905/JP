@@ -2,20 +2,21 @@ package com.trade.source;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.concurrent.BlockingQueue;
+
+import com.trade.ticker.TickerModule;
 
 public class RESTClient implements Parser 
 {
 	File file;
-	BlockingQueue<String> tradeRecordQueue;
+	TickerModule tickerModule;
 	
-	public RESTClient(File file , BlockingQueue<String> tradeRecordQueue) 
+	public RESTClient(File file , TickerModule tickerModule) 
 	{
 		this.file = file;
-		this.tradeRecordQueue = tradeRecordQueue;
+		this.tickerModule = tickerModule;
 	}
 	
-	public void parse(File file, BlockingQueue<String> queue) throws FileNotFoundException, InterruptedException 
+	public void parse(File file, TickerModule tickerModule) throws FileNotFoundException 
 	{
 		// TODO
 	}

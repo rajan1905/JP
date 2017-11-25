@@ -3,18 +3,26 @@ package com.trade.source;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
+
+import com.trade.ticker.TickerModule;
 
 public class CSVParser implements Parser 
 {
 
-	public void parse(File file, BlockingQueue<String> queue) throws FileNotFoundException, InterruptedException 
+	public void parse(File file, TickerModule tickerModule) throws FileNotFoundException 
 	{
 		Scanner scanner = new Scanner(file);
 		
 		while(scanner.hasNextLine())
 		{
-			queue.put(scanner.nextLine());
+			try 
+			{
+				tickerModule.getInputQueue().put(scanner.nextLine());
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		scanner.close();

@@ -29,7 +29,7 @@ public class EntryPoint
 		 * Start the SourceModule. You can have more than one SourceModule
 		 * with different sources.
 		 */
-		SourceModule sourceModule = new SourceModule(file , null, tickerModule.getInputQueue());
+		SourceModule sourceModule = new SourceModule(file , null, tickerModule);
 		sourceModule.init();
 		
 		StatisticModule.init();
