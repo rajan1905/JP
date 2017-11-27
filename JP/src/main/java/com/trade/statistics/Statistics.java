@@ -19,10 +19,10 @@ import com.trade.ticker.Ticker;
  */
 public class Statistics 
 {
-	private static Map<Calendar,Float> incomingAmountSettledPerDay;
-	private static Map<Calendar,Float> outgoingAmountSettledPerDay;
-	private static Map<String,Float> entityIncomingRank;
-	private static Map<String,Float> entityOutgoingRank;
+	public static Map<Calendar,Float> incomingAmountSettledPerDay;
+	public static Map<Calendar,Float> outgoingAmountSettledPerDay;
+	public static Map<String,Float> entityIncomingRank;
+	public static Map<String,Float> entityOutgoingRank;
 	
 	static
 	{

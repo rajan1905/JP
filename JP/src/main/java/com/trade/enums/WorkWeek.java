@@ -17,8 +17,7 @@ public enum WorkWeek
 		THURSDAY,FRIDAY,SATURDAY
 	}
 	
-	private static Map<String,WorkWeek> map=null;
-	public final static short WORKING_DAY_FACTOR=1;
+	private static Map<String,WorkWeek> map = null;
 	
 	private WorkWeek(Week startWeek, Week endWeek)
 	{
@@ -28,20 +27,17 @@ public enum WorkWeek
 	
 	private static void generateMapping()
 	{
-		if(map==null)
-		{
 			map=new HashMap<String, WorkWeek>();
 			
 			for(WorkWeek workWeek:values())
 			{
 				map.put(workWeek.name(), workWeek);
 			}
-		}
 	}
 	
 	public static Map<String,WorkWeek> getMap()
 	{
-		if(map==null)
+		if(map == null)
 			generateMapping();
 		
 		return map;

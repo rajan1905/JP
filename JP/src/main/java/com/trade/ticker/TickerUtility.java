@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import com.trade.constants.Constants;
 import com.trade.enums.WorkWeek;
 
 /**
@@ -25,11 +26,10 @@ public class TickerUtility
 	 * @param ticker
 	 * @return boolean
 	 */
-	@SuppressWarnings("deprecation")
 	public static boolean checkForWorkingWeek(Ticker ticker)
 	{
 		boolean result = false;
-		short weekDay = (short) ticker.getSettlementDate().getTime().getDay();
+		short weekDay = (short) (ticker.getSettlementDate().get(Calendar.DAY_OF_WEEK)-1);
 		WorkWeek workWeek = WorkWeek.getMap().get(ticker.getCurrency());
 		
 		if(workWeek == null)
@@ -55,10 +55,9 @@ public class TickerUtility
 		
 		while(!checkForWorkingWeek(ticker))
 		{
-			newSettlementDate.add(Calendar.DAY_OF_MONTH, WorkWeek.WORKING_DAY_FACTOR);
+			newSettlementDate.add(Calendar.DAY_OF_MONTH, Constants.WORKING_DAY_FACTOR);
 			ticker.setSettlementDate(newSettlementDate);
 		}
-		
 	}
 	
 	/**

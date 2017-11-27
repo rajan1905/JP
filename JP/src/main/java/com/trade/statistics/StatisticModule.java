@@ -26,7 +26,7 @@ public class StatisticModule
 					try
 					{
 						Ticker ticker = statisticQueue.take();
-						System.out.println("Got ticker : "+ticker);
+
 						float amount = ticker.getUnits() * 
 								ticker.getPricePerUnit() * 
 								ticker.getAgreedFx();

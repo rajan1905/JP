@@ -1,4 +1,8 @@
 com.assignment.JP
+com.trade.comparators
+com.trade.constants
 com.trade.enums
 com.trade.main
+com.trade.source
+com.trade.statistics
 com.trade.ticker
