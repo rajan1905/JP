@@ -78,45 +78,69 @@ public class Statistics
 	@SuppressWarnings("rawtypes")
 	public static String printStatistics()
 	{
-		StringBuilder sb=new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		sb.append("\tShowing amount settled incoming per day\n");
 		sb.append("\t---------------------------------------\n\n");
 		
-		Iterator<?> iterator=incomingAmountSettledPerDay.entrySet().iterator();
+		Iterator<?> iterator = incomingAmountSettledPerDay.entrySet().iterator();
 		
 		while(iterator.hasNext())
 		{
-			Map.Entry pair=(Map.Entry) iterator.next();
-			Calendar calendar=(Calendar) pair.getKey();
+			Map.Entry pair = (Map.Entry) iterator.next();
+			Calendar calendar = (Calendar) pair.getKey();
 			sb.append("Date : "+calendar.getTime()+" Amount : "+pair.getValue()+"\n\n");
 			
 		}
 		
-		iterator=outgoingAmountSettledPerDay.entrySet().iterator();
+		iterator = outgoingAmountSettledPerDay.entrySet().iterator();
 		
 		sb.append("\tShowing amount settled outging per day\n");
 		sb.append("\t---------------------------------------\n\n");
 		
 		while(iterator.hasNext())
 		{
-			Map.Entry pair=(Map.Entry) iterator.next();
-			Calendar calendar=(Calendar) pair.getKey();
+			Map.Entry pair = (Map.Entry) iterator.next();
+			Calendar calendar = (Calendar) pair.getKey();
 			sb.append("Date : "+calendar.getTime()+" Amount : "+pair.getValue()+"\n\n");
 		}
 		
 		ValueComparator valueComparator=new ValueComparator(entityIncomingRank);
 		TreeMap<String,Float> sortedMap=new TreeMap<String, Float>(valueComparator);
 		
+		int counter = 1;
+		
 		sortedMap.putAll(entityIncomingRank);
 		
-		sb.append(sortedMap);
+		iterator = sortedMap.entrySet().iterator();
+		
+		sb.append("\tShowing ranking by incoming per day\n");
+		sb.append("\t---------------------------------------\n\n");
+		
+		while(iterator.hasNext())
+		{
+			Map.Entry pair = (Map.Entry) iterator.next();
+			sb.append(counter + ": "+pair.getKey()+" , Amount : "+pair.getValue()+"\n\n");
+			counter++;
+		}
+		
+		counter = 1;
 		
 		valueComparator=new ValueComparator(entityOutgoingRank);
 		sortedMap=new TreeMap<String, Float>(valueComparator);
 		
 		sortedMap.putAll(entityOutgoingRank);
-		sb.append("\n\n");
-		sb.append(sortedMap);
+		
+		iterator = sortedMap.entrySet().iterator();
+		
+		sb.append("\tShowing ranking by outging per day\n");
+		sb.append("\t---------------------------------------\n\n");
+		
+		while(iterator.hasNext())
+		{
+			Map.Entry pair = (Map.Entry) iterator.next();
+			sb.append(counter + ": "+pair.getKey()+" , Amount : "+pair.getValue()+"\n\n");
+			counter++;
+		}
 		
 		return sb.toString();
 	}

@@ -6,4 +6,5 @@ public class Constants
 	public static final char SELL = 'S';
 	public static final char BUY = 'B';
 	public final static short WORKING_DAY_FACTOR = 1;
+	public final static String SPLIT_CHAR = ",";
 }

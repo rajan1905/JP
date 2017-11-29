@@ -30,6 +30,7 @@ public class StatisticModule
 						float amount = ticker.getUnits() * 
 								ticker.getPricePerUnit() * 
 								ticker.getAgreedFx();
+						
 						Statistics.calculateAmountSettledPerDay(ticker , amount);
 					}
 					catch(InterruptedException ie)
