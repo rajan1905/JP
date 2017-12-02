@@ -6,7 +6,7 @@ import java.util.Map;
 public enum WorkWeek 
 {
 	AED(Week.SUNDAY,Week.THURSDAY),
-	SAR(Week.SUNDAY,Week.THURSDAY),
+	SGP(Week.SUNDAY,Week.THURSDAY),
 	DEFAULT(Week.MONDAY,Week.FRIDAY);
 	
 	private short start,end;

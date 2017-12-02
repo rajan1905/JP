@@ -29,7 +29,7 @@ public class TickerUtility
 	public static boolean checkForWorkingWeek(Ticker ticker)
 	{
 		boolean result = false;
-		short weekDay = (short) (ticker.getSettlementDate().get(Calendar.DAY_OF_WEEK)-1);
+		short weekDay = (short) (ticker.getSettlementDate().get(Calendar.DAY_OF_WEEK) - 1);
 		WorkWeek workWeek = WorkWeek.getMap().get(ticker.getCurrency());
 		
 		if(workWeek == null)

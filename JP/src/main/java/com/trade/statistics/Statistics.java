@@ -21,15 +21,15 @@ public class Statistics
 {
 	public static Map<Calendar,Float> incomingAmountSettledPerDay;
 	public static Map<Calendar,Float> outgoingAmountSettledPerDay;
-	public static Map<String,Float> entityIncomingRank;
-	public static Map<String,Float> entityOutgoingRank;
+	public static Map<String,Float> tickerRankByIncoming;
+	public static Map<String,Float> tickerRankByOutgoing;
 	
 	static
 	{
 		incomingAmountSettledPerDay = new HashMap<Calendar, Float>();
 		outgoingAmountSettledPerDay = new HashMap<Calendar, Float>();
-		entityIncomingRank = new HashMap<String, Float>();
-		entityOutgoingRank = new HashMap<String, Float>();
+		tickerRankByIncoming = new HashMap<String, Float>();
+		tickerRankByOutgoing = new HashMap<String, Float>();
 	}
 	
 	private Statistics() {}
@@ -67,7 +67,7 @@ public class Statistics
 		Map<String,Float> map = null;
 		String entity = ticker.getEntity();
 		
-		map = ticker.getAction() == Constants.SELL ? entityIncomingRank : entityOutgoingRank;
+		map = ticker.getAction() == Constants.SELL ? tickerRankByIncoming : tickerRankByOutgoing;
 		
 		float currentValue = map.get(entity) == null ? 0 : map.get(entity);
 		currentValue += amount;
@@ -104,12 +104,12 @@ public class Statistics
 			sb.append("Date : "+calendar.getTime()+" Amount : "+pair.getValue()+"\n\n");
 		}
 		
-		ValueComparator valueComparator=new ValueComparator(entityIncomingRank);
+		ValueComparator valueComparator=new ValueComparator(tickerRankByIncoming);
 		TreeMap<String,Float> sortedMap=new TreeMap<String, Float>(valueComparator);
 		
 		int counter = 1;
 		
-		sortedMap.putAll(entityIncomingRank);
+		sortedMap.putAll(tickerRankByIncoming);
 		
 		iterator = sortedMap.entrySet().iterator();
 		
@@ -125,10 +125,10 @@ public class Statistics
 		
 		counter = 1;
 		
-		valueComparator=new ValueComparator(entityOutgoingRank);
+		valueComparator=new ValueComparator(tickerRankByOutgoing);
 		sortedMap=new TreeMap<String, Float>(valueComparator);
 		
-		sortedMap.putAll(entityOutgoingRank);
+		sortedMap.putAll(tickerRankByOutgoing);
 		
 		iterator = sortedMap.entrySet().iterator();
 		
